@@ -1,24 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import { HelmetProvider } from "react-helmet-async";
+import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
+import Layout from "./components/Layout";
+import Home from "./screen/Home";
+import Login from "./screen/Login";
+import NotFound from "./screen/NotFound";
+import { GlobalStyles } from "./styles";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <HelmetProvider>
+      <Router>
+        <GlobalStyles />
+        <Switch>
+          <Route path="/" exact>
+            <Layout>
+              <Home />
+            </Layout>
+          </Route>
+          <Route path="/login">
+            <Layout>
+              <Login />
+            </Layout>
+          </Route>
+          <Route>
+            <NotFound />
+          </Route>
+        </Switch>
+      </Router>
+    </HelmetProvider>
   );
 }
 
