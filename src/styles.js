@@ -54,4 +54,15 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+a { text-decoration:none !important; color:black } a:hover { text-decoration:none !important; color:black }
+
+ul {
+	display: block;
+    list-style-type: disc;
+    margin-block-start: 0.7em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+}
 `
