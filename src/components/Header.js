@@ -70,7 +70,6 @@ const CategoryArea = styled.div`
 const CategoryAreaSub = styled.div`
     width: 65%;
     text-align: center;
-    
     height: 100%;
     margin: 0 auto;
 `
@@ -83,37 +82,17 @@ const CategoryInner = styled.div`
     margin-right: auto;
 `
 
-const CategoryAllMenu = styled.div`
-    display: block;
-    width: 50px;
+const CategorySub = styled.div`
+    width: 100%;
     height: 100%;
-    flex-grow: 0;
-    flex-shrink: 0;
-    cursor: pointer;
-    position: absolute;
-    top: 0;
-    left: 0;
-    transition: background 0.15s 0.0s ease-in-out;
-`
-
-const CategorySub = styled.ul`
-    height: 100%;
+    margin: 0 auto;
     display: flex;
-    flex-wrap: nowrap;
-    justify-content: space-evenly;
 `
 
-const CategorySubItem = styled.li`
-    margin-right: 15px;
-    /* display: inline-block; */
-    color: #222;
+const CategorySubItem = styled.div`
     font-size: 12px;
-    height: 100%;
-    padding-left: 4px;
-    padding-right: 4px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-grow: 1;
+     padding : 20px 0px 0px 0px; 
 `
 
 function Header() {
@@ -140,13 +119,15 @@ function Header() {
             <CategoryArea>
                 <CategoryAreaSub>
                     <CategoryInner>
-                        <CategoryAllMenu>...</CategoryAllMenu>
                         <CategorySub>
+                            <CategorySubItem>전체상품</CategorySubItem>
+                            <CategorySubItem>베스트</CategorySubItem>
                             <CategorySubItem>상의</CategorySubItem>
                             <CategorySubItem>하의</CategorySubItem>
                             <CategorySubItem>신발</CategorySubItem>
                             <CategorySubItem>아우터</CategorySubItem>
                             <CategorySubItem>악세사리</CategorySubItem>
+                            <CategorySubItem>기타</CategorySubItem>
                         </CategorySub>
                     </CategoryInner>
                 </CategoryAreaSub>
