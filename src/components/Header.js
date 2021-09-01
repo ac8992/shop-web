@@ -34,7 +34,7 @@ function Header() {
         <HeaderContent>
             <TopArea />
             <HeaderLogo>
-                <Logo><a href="/" >Shop</a></Logo>
+                <Logo><a href="/" >Shu</a></Logo>
             </HeaderLogo>
             <Category />
         </HeaderContent>

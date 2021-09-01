@@ -1,8 +1,7 @@
 import { gql, useMutation } from "@apollo/client";
 import { useForm } from "react-hook-form";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import { logUserIn } from "../apollo";
 import FormError from "../components/auth/FormError";
 import PageTitle from "../components/feed/PageTitle";
 import routes from "./routes";
