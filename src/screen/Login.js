@@ -1,4 +1,10 @@
+import { gql, useMutation } from "@apollo/client";
+import { useForm } from "react-hook-form";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import styled from "styled-components";
+import { logUserIn } from "../apollo";
+import FormError from "../components/auth/FormError";
+import PageTitle from "../components/feed/PageTitle";
 
 const LoginForm = styled.div`
     width : 430px;
@@ -20,7 +26,7 @@ const LoginText = styled.span`
     font-weight: bold;
 `
 
-const IdInput = styled.input`
+const Input = styled.input`
     width: 98%;
     height: 60px;
     padding: 2px 2px 2px 7px;
@@ -32,7 +38,7 @@ const IdInput = styled.input`
     outline: none;
 `
 
- const LoginButton = styled.button`
+const LoginButton = styled.input`
     margin-top: 20px;
     width: 100%;
     padding: 18px 16px;
@@ -40,9 +46,9 @@ const IdInput = styled.input`
     color: #fff;
     border : none;
     font-size: 15px;
- ` 
+ `
 
- const Find = styled.ul`
+const Find = styled.ul`
     margin : 0px;
     margin-top: 12px;
     border-top: 1px solid #e7e7e7;
@@ -68,23 +74,85 @@ const JoinButton = styled.button`
     font-size: 15px;
 `
 
+const Notification = styled.div`
+    color: #2ecc71;
+`
+
+const LOGIN_MUTATION = gql`
+    mutation login($userId:String!, $password:String!) {
+        login(userId:$userId, password:$password) {
+            ok
+            token
+            error
+        }
+    }
+`
+
 function Login() {
+    const history = useHistory()
+    const location = useLocation();
+    const {register,  handleSubmit, errors, formState, getValues, setError, clearErrors} = useForm({
+        mode: "onChange",
+    });
+
+    const onCompleted = (data) => {
+        const {login: {ok, error, token}} = data;
+        if(!ok) {
+            return setError("result", {
+                message: error,
+            })
+        }
+        if(token) {
+            logUserIn(token);
+            history.push('/');
+        }
+    }
+    const [login, {loading}] = useMutation(LOGIN_MUTATION, {
+        onCompleted,
+    });
+    const onSubmitValid = (data) => {
+        if(loading) {
+            return;
+        }
+        const {userId, password} = getValues();
+        login({
+            variables: {userId, password},
+        })
+    }
+    
+    const clearLoginError = () => clearErrors("result");
     return (
-        <div>
-            <LoginForm>
-                <LoginTitle className="LoginTitle">LOGIN</LoginTitle>
-                <LoginText>회원 로그인</LoginText>
-                <IdInput placeholder="아이디" />
-                <IdInput placeholder="비밀번호" />
-                <LoginButton>로그인</LoginButton>
-                <Find>
-                    <IdFind>아이디 찾기</IdFind>
-                    <IdFind>비밀번호 찾기</IdFind>
-                </Find>
+        <LoginForm>
+            <PageTitle title="로그인" />
+            <LoginTitle className="LoginTitle">LOGIN</LoginTitle>
+            <LoginText>회원 로그인</LoginText>
+            <Notification>{location?.state?.message}</Notification>
+            <form onSubmit={handleSubmit(onSubmitValid)}>
+            <Input ref={register({
+                        required: "사용자 이름을 입력해주세요",
+                        minLength: {
+                            value:4,
+                            message: "사용자 이름은 최소 4자 이상이여야 합니다"
+                        },
+                    })} onChange={clearLoginError} name="userId" type="text" placeholder="사용자 아이디" hasError={Boolean(errors?.userId?.message)}/>
+                    <FormError message={errors?.userId?.message}/>
+                    <Input ref={register({
+                        required:"비밀번호를 입력해주세요",
+                    })} onChange={clearLoginError}  name="password" type="password" placeholder="비밀번호" hasError={Boolean(errors?.password?.message)}/>
+                    <FormError message={errors?.password?.message}/>
+                <LoginButton type="submit" value={loading ? "진행 중입니다" : "로그인"} disabled={!formState.isValid || loading} />
+                <FormError message={errors?.result?.message} />
+            </form>
+            <Find>
+                <IdFind>아이디 찾기</IdFind>
+                <IdFind>비밀번호 찾기</IdFind>
+            </Find>
+            <Link to="/join">
                 <JoinButton>회원가입</JoinButton>
-            </LoginForm>
-        </div>
+            </Link>
+        </LoginForm>
     )
 }
+
 
 export default Login;
